@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css"> <title>Roadmap Result</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Your Career Roadmap</h1>
+
+        <div id="cloudEngineerRoadmap" class="row mb-4" style="display: none;">
+            <div class="col-md-12">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body">
+                        <h2 class="card-title text-primary">Roadmap for <span id="designation"></span> at <span id="company"></span></h2>
+                        <h3 class="card-subtitle mb-2 text-muted">Salary Range: <span id="salaryRange" class="text-success"></span></h3>
+                        <h4>Steps:</h4>
+                        <ul id="stepsList" class="list-group list-group-flush"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="otherRoadmapDetails" class="row">
+            <div class="col-md-6">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body">
+                        <h4>Coding Skills Needed:</h4>
+                        <ul id="codingSkillsList" class="list-group list-group-flush"></ul>
+                        <h4>Internships/Experience:</h4>
+                        <ul id="internshipsList" class="list-group list-group-flush"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body">
+                        <h4>Interview Topics:</h4>
+                        <ul id="interviewTopicsList" class="list-group list-group-flush"></ul>
+                        <h4>Project Topics:</h4>
+                        <ul id="projectTopicsList" class="list-group list-group-flush"></ul>
+                        <h4>Number of Interview Rounds: <span id="interviewRounds"></span></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="window.location.href='generator.html'" class="btn btn-primary btn-lg mt-4">Generate Another Roadmap</button>
+    </div>
+
+    <script>
+        // Retrieve the roadmap data from localStorage
+        const roadmapData = JSON.parse(localStorage.getItem('roadmapData'));
+
+        // Log the retrieved data for debugging
+        console.log('Retrieved Roadmap Data:', roadmapData);
+
+        if (roadmapData) {
+            // Populate the roadmap details
+            document.getElementById('designation').textContent = roadmapData.designation;
+            document.getElementById('company').textContent = roadmapData.company;
+            document.getElementById('salaryRange').textContent = roadmapData.salaryRange;
+            document.getElementById('interviewRounds').textContent = roadmapData.interviewRounds || 'N/A';
+
+            // Populate the lists
+            populateList('stepsList', roadmapData.steps);
+            populateList('codingSkillsList', roadmapData.codingSkills);
+            populateList('internshipsList', roadmapData.internships);
+            populateList('interviewTopicsList', roadmapData.interviewTopics);
+            populateList('projectTopicsList', roadmapData.projectTopics);
+
+            // Show the Cloud Engineer roadmap if applicable
+            if (roadmapData.designation === 'Cloud Engineer' && roadmapData.company === 'Company E' && roadmapData.salaryRange === '90000-110000') {
+                document.getElementById('cloudEngineerRoadmap').style.display = 'block';
+            } else {
+                document.getElementById('cloudEngineerRoadmap').style.display = 'none';
+            }
+        } else {
+            document.getElementById('roadmapResult').innerHTML = '<p>No roadmap data found. Please generate a roadmap first.</p>';
+        }
+
+        // Helper function to populate lists
+        function populateList(listId, items) {
+            const list = document.getElementById(listId);
+            if (items && items.length > 0) {
+                list.innerHTML = items.map(item => `<li>${item}</li>`).join('');
+            } else {
+                list.innerHTML = '<li>No items available</li>';
+            }
+        }
+    </script>
+</body>
+</html>

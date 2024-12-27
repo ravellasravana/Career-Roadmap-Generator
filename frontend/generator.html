@@ -1,0 +1,101 @@
+<!-- frontend/generator.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Generate Roadmap</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Generate Your Roadmap</h1>
+        <form id="generateForm">
+            <div class="form-group">
+                <label for="salaryRange">Salary Range:</label>
+                <select class="form-control" id="salaryRange" required>
+                    <option value="" disabled selected>Select Salary Range</option>
+                    <option value="30000-50000">30,000 - 50,000</option>
+                    <option value="50000-70000">50,000 - 70,000</option>
+                    <option value="70000-90000">70,000 - 90,000</option>
+                    <option value="90000-110000">90,000 - 110,000</option>
+                    <option value="110000-130000">110,000 - 130,000</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="designation">Designation:</label>
+                <select class="form-control" id="designation" required>
+                    <option value="" disabled selected>Select Designation</option>
+                    <option value="Junior Developer">Junior Developer</option>
+                    <option value="Software Tester">Software Tester</option>
+                    <option value="Data Analyst">Data Analyst</option>
+                    <option value="Project Coordinator">Project Coordinator</option>
+                    <option value="Technical Support">Technical Support</option>
+                    <option value="Software Developer">Software Developer</option>
+                    <option value="Business Analyst">Business Analyst</option>
+                    <option value="Data Scientist">Data Scientist</option>
+                    <option value="Network Engineer">Network Engineer</option>
+                    <option value="UX/UI Designer">UX/UI Designer</option>
+                    <option value="Senior Software Engineer">Senior Software Engineer</option>
+                    <option value="Data Engineer">Data Engineer</option>
+                    <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+                    <option value="DevOps Engineer">DevOps Engineer</option>
+                    <option value="Machine Learning Engineer">Machine Learning Engineer</option>
+                    <option value="Lead Data Scientist">Lead Data Scientist</option>
+                    <option value="Solutions Architect">Solutions Architect</option>
+                    <option value="Senior Network Engineer">Senior Network Engineer</option>
+                    <option value="Product Manager">Product Manager</option>
+                    <option value="Cloud Engineer">Cloud Engineer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="company">Company:</label>
+                <select class="form-control" id="company" required>
+                    <option value="" disabled selected>Select Company</option>
+                    <option value="Company A">Company A</option>
+                    <option value="Company B">Company B</option>
+                    <option value="Company C">Company C</option>
+                    <option value="Company D">Company D</option>
+                    <option value="Company E">Company E</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Generate</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('generateForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const salaryRange = document.getElementById('salaryRange').value;
+            const designation = document.getElementById('designation').value;
+            const company = document.getElementById('company').value;
+
+            // ... (previous code)
+
+            fetch('http://localhost:5000/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ salaryRange, designation, company })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No roadmap found for the given criteria.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Store the roadmap data in localStorage
+                localStorage.setItem('roadmapData', JSON.stringify(data));
+                // Redirect to the result page
+                window.location.href = 'result.html';
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+        });
+    </script>
+</body>
+</html>
